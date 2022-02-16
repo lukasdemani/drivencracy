@@ -22,5 +22,6 @@ export async function validateChoiceSchema(req, res, next){
     if (isExpired) {
         return res.sendStatus(403)
     }
+    
     next();
 }
