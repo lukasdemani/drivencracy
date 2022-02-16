@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import db from "../db";
+import db from "../db.js";
 
 export async function postVote(req, res) {
     const choiceId = req.params;
@@ -36,7 +36,7 @@ export async function getResult(req, res) {
             ).pop();
         }
 
-        res.sendStatus(201).
+        res.send(winner);
     } catch {
         return res.sendStatus(500);
     }
