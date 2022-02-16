@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import choiceSchema from "../schemas/choiceSchema";
+import choiceSchema from "../schemas/choiceSchema.js";
 
 export async function validateChoiceSchema(req, res, next){
     const choice = req.body;
@@ -9,8 +9,8 @@ export async function validateChoiceSchema(req, res, next){
         return res.sendStatus(422);
     }
 
-    const choice = await db.collection("choices").findOne({ title: choice.title });
-    if (choice) {
+    const choiceDb = await db.collection("choices").findOne({ title: choice.title });
+    if (choiceDb) {
         return res.sendStatus(409);
     }
     
@@ -22,6 +22,6 @@ export async function validateChoiceSchema(req, res, next){
     if (isExpired) {
         return res.sendStatus(403)
     }
-    
+
     next();
 }

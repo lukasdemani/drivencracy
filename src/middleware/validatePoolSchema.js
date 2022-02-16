@@ -1,4 +1,4 @@
-import poolSchema from "../schemas/poolSchema";
+import poolSchema from "../schemas/poolSchema.js";
 
 export async function validatePoolSchema(req, res, next){
     const pool = req.body;
