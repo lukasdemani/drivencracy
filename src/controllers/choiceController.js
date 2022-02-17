@@ -1,4 +1,5 @@
 import db from "../db.js";
+import { ObjectId } from "mongodb";
 
 export async function postChoice(req, res) {
     const choice = req.body;
@@ -13,10 +14,10 @@ export async function postChoice(req, res) {
 }
 
 export async function getChoice(req, res) {
-    const poolId = req.params;
+    const { id } = req.params;
 
     try {
-        const choices = await db.collection("choices").find({ poolId }).toArray()
+        const choices = await db.collection("choices").find({ poolId: id}).toArray()
 
         res.status(201).send(choices);
     } catch {
