@@ -6,7 +6,7 @@ export async function postPool(req, res){
     try {
         await db.collection("pools").insertOne({ ...pool });
 
-        res.sendStatus(201).send(pool);
+        res.status(201).send(pool);
     } catch {
         return res.sendStatus(500);
     }

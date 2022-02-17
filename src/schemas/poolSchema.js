@@ -2,7 +2,7 @@ import joi from 'joi';
 
 const poolSchema = joi.object({
     title: joi.string().required(),
-    expireAt: joi.date()
+    expireAt: joi.string().allow("")
   });
   
 export default poolSchema;
