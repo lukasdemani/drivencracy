@@ -1,5 +1,7 @@
 import dayjs from "dayjs";
 import choiceSchema from "../schemas/choiceSchema.js";
+import db from "../db.js";
+import { ObjectId } from "mongodb";
 
 export async function validateChoiceSchema(req, res, next){
     const choice = req.body;
@@ -14,11 +16,11 @@ export async function validateChoiceSchema(req, res, next){
         return res.sendStatus(409);
     }
     
-    const pool = await db.collenction("pools").findOne({ id: choice.poolId });
+    const pool = await db.collection("pools").findOne({ _id: ObjectId(choice.poolId) });
     if (!pool){
         return res.sendStatus(404);
     }
-    const isExpired = dayjs(pool.expireAt).toNow()>0;
+    const isExpired = dayjs(pool.expireAt).toNow>0;
     if (isExpired) {
         return res.sendStatus(403)
     }
