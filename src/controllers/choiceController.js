@@ -17,7 +17,7 @@ export async function getChoice(req, res) {
     const { id } = req.params;
 
     try {
-        const choices = await db.collection("choices").find({ poolId: id}).toArray()
+        const choices = await db.collection("choices").find({ poolId: id }).toArray()
 
         res.status(201).send(choices);
     } catch {

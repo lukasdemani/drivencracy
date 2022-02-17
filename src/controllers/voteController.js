@@ -2,11 +2,11 @@ import dayjs from "dayjs";
 import db from "../db.js";
 
 export async function postVote(req, res) {
-    const choiceId = req.params;
+    const { id } = req.params;
 
     const vote = {
         createdAt: dayjs(),
-        choiceId: choiceId
+        choiceId: id
     }
 
     try {
@@ -19,15 +19,16 @@ export async function postVote(req, res) {
 }
 
 export async function getResult(req, res) {
-    const poolId = req.params;
+    const { id } = req.params;
 
     try {
-        const choices = await db.collection("choices").find({ id: poolId}).toArray();
+        const choices = await db.collection("choices").find({ poolId: id }).toArray();
         const votes = await db.collection("votes").find({}).toArray();
 
-        const choicesId = choices.map((choice) => choice.id);
+        const choicesId = choices.map((choice) => choice._id.toString());
         const votesFiltered = votes.filter((vote) => choicesId.includes(vote.choiceId));
-        const votesFilteredId = votesFiltered.map((vote) => vote.id);
+        const votesFilteredId = votesFiltered.map((vote) => vote.choiceId);
+        console.log(votesFilteredId)
 
         function getWinner(votesFilteredId){
             return votesFilteredId.sort((a,b) =>
@@ -36,7 +37,7 @@ export async function getResult(req, res) {
             ).pop();
         }
 
-        res.send(winner);
+        res.send(getWinner(votesFilteredId));
     } catch {
         return res.sendStatus(500);
     }
