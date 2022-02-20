@@ -20,8 +20,8 @@ export async function validateChoiceSchema(req, res, next){
     if (!pool){
         return res.sendStatus(404);
     }
-    const isExpired = dayjs(pool.expireAt).toNow>0;
-    if (isExpired) {
+
+    if (dayjs().diff(dayjs(pool.expireAt))>0) {
         return res.sendStatus(403)
     }
 

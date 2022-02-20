@@ -11,8 +11,8 @@ export async function validateVote(req, res, next){
     }
 
     const pool = await db.collection("pools").findOne({ _id: ObjectId(choice.poolId) });
-    const isExpired = dayjs(pool.expireAt).toNow>0;
-    if (isExpired) {
+
+    if (dayjs().diff(dayjs(pool.expireAt))>0) {
         return res.sendStatus(403)
     }
 
