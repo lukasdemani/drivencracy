@@ -10,16 +10,17 @@ export async function validateChoiceSchema(req, res, next){
     if (validation.error) {
         return res.sendStatus(422);
     }
-
-    const choiceDb = await db.collection("choices").findOne({ title: choice.title });
-    if (choiceDb) {
-        return res.sendStatus(409);
-    }
     
     const pool = await db.collection("pools").findOne({ _id: ObjectId(choice.poolId) });
     if (!pool){
         return res.sendStatus(404);
     }
+    
+    const choiceDb = await db.collection("choices").findOne({ title: choice.title });
+    if (choiceDb) {
+        return res.sendStatus(409);
+    }
+    
 
     if (dayjs().diff(dayjs(pool.expireAt))>0) {
         return res.sendStatus(403)
