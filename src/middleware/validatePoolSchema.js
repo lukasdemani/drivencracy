@@ -10,7 +10,7 @@ export async function validatePoolSchema(req, res, next){
     }
 
     if (!pool.expireAt){
-        pool.expireAt = dayjs().add(30, 'day');
+        pool.expireAt = dayjs().add(30, 'day').format('YYYY-MM-DD hh:mm');
     }
 
     next();

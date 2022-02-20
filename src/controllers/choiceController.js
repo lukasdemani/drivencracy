@@ -5,9 +5,11 @@ export async function postChoice(req, res) {
     const choice = req.body;
 
     try {
-        await db.collection("choices").insertOne({ ...choice });
+        const response = await db.collection("choices").insertOne({ ...choice });
 
-        res.status(201).send(choice);
+        const choiceCreated = await db.collection("choices").findOne({ _id: ObjectId(response.insertedId) })
+
+        res.status(201).send(choiceCreated);
     } catch {
         return res.sendStatus(500);
     }

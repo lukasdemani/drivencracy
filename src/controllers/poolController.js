@@ -1,12 +1,16 @@
+import { ObjectId } from "mongodb";
 import db from "../db.js";
 
 export async function postPool(req, res){
     const pool = req.body;
 
     try {
-        await db.collection("pools").insertOne({ ...pool });
+        const response = await db.collection("pools").insertOne({ ...pool });
+        console.log(response.insertedId)
 
-        res.status(201).send(pool);
+        const poolCreated = await db.collection("pools").findOne({ _id: ObjectId(response.insertedId) })
+
+        res.status(201).send(poolCreated);
     } catch {
         return res.sendStatus(500);
     }

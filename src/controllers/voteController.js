@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import dayjs from "dayjs";
 import db from "../db.js";
 
@@ -28,16 +29,29 @@ export async function getResult(req, res) {
         const choicesId = choices.map((choice) => choice._id.toString());
         const votesFiltered = votes.filter((vote) => choicesId.includes(vote.choiceId));
         const votesFilteredId = votesFiltered.map((vote) => vote.choiceId);
-        console.log(votesFilteredId)
 
-        function getWinner(votesFilteredId){
-            return votesFilteredId.sort((a,b) =>
-                  votesFilteredId.filter(v => v===a).length
-                - votesFilteredId.filter(v => v===b).length
+        function getWinner(votes){
+            return votes.sort((a,b) =>
+                  votes.filter(vote => vote===a).length
+                - votes.filter(vote => vote===b).length
             ).pop();
         }
 
-        res.send(getWinner(votesFilteredId));
+        const mostVotedId = getWinner(votesFilteredId);
+
+        const numVotes = votesFiltered.filter((vote) => vote.choiceId === mostVotedId).length
+
+        const mostVoted = choices.filter((choice) => choice._id.toString() === mostVotedId)
+
+        const pool = await db.collection("pools").findOne({ _id: ObjectId(id) })
+
+
+        const result = {
+            title: mostVoted[0].title,
+            votes: numVotes
+        }
+
+        res.send({ ...pool, result });
     } catch {
         return res.sendStatus(500);
     }
