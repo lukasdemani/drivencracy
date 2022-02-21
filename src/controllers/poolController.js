@@ -6,7 +6,6 @@ export async function postPool(req, res){
 
     try {
         const response = await db.collection("pools").insertOne({ ...pool });
-        console.log(response.insertedId)
 
         const poolCreated = await db.collection("pools").findOne({ _id: ObjectId(response.insertedId) })
 
