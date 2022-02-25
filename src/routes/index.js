@@ -1,10 +1,10 @@
 import { Router } from "express";
+import poolRouter from "./poolRouter.js";
+import voteRouter from "./voteRouter.js";
 
 const router = Router();
 
-router.use(categoriesRouter);
-router.use(clientsRouter);
-router.use(rentalsRouter);
-router.use(gamesRouter);
+router.use(poolRouter);
+router.use(voteRouter);
 
 export default router;
