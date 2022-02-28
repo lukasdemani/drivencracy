@@ -36,12 +36,15 @@ Create the options of polls</br>
     title: "JavaScript",</br>
 		poolId: 2,</br>
   }</br>
+  
 Get the choices of a poll</br>
   GET</br>
   /pool/:id/choice</br>
+  
 Post a voto</br>
   POST</br>
   /choice/:id/vote</br>
+  
 Get the result</br>
   GET</br>
   /pool/:id/result</br>
